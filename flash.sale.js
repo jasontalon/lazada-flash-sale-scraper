@@ -15,9 +15,11 @@ function refineScrapedProduct(product) {
 			.replace(/[^\d\.\s]+/gm, "")
 			.trim(),
 		sold =
-			(product.sold
-				? product.sold.replace(/[^\d\.\s]+/gm, "").trim()
-				: "") || "0",
+			product.sold == "Almost sold out"
+				? "-1"
+				: (product.sold
+						? product.sold.replace(/[^\d\.\s]+/gm, "").trim()
+						: "") || "0",
 		link = product.link.split("?")[0];
 
 	return { name, salePrice, origPrice, sold, link };
@@ -32,7 +34,7 @@ function scrapeFlashSaleProducts() {
 		const name = (e.querySelector(".sale-title") || {}).innerText,
 			salePrice = (e.querySelector(".sale-price") || {}).innerText,
 			origPrice = (e.querySelector(".origin-price") || {}).innerText,
-			sold = (e.querySelector(".pg-wrap") || {}).innerText,
+			sold = (e.querySelector(".pg-wrap") || {}).innerText || "-1",
 			link = e.closest("a").href;
 		return { name, salePrice, origPrice, sold, link };
 	});
