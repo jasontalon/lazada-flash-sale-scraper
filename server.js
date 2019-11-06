@@ -15,8 +15,12 @@ const util = require("util"),
 	scrapeFlashSaleJob = new CronJob(
 		`0 */${scrapeFlashSaleJobFrequency} * * * *`,
 		scrapeFlashSaleCommand
-	); 
+	);
+let lastRun;
 
+app.get("/", (req, res) => {
+	res.json({ lastRun });
+});
 app.listen(port, async () => {
 	console.log(`app is listening on port ${port}!`);
 	scrapeFlashSaleJob.start();
@@ -39,6 +43,8 @@ async function scrapeFlashSaleCommand() {
 		console.log(
 			`${new Date()} ${scrapedProducts.length} products scraped.`
 		);
+
+		lastRun = new Date();
 	} catch (error) {
 		console.log(util.inspect(error));
 	} finally {
