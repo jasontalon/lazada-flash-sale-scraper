@@ -2,9 +2,7 @@ FROM node:10.17-alpine
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
-COPY .npmrc ./
+COPY package*.json .npmrc ./
 
 RUN npm install
 
